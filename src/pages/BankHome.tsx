@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Bell, Eye, EyeOff, ChevronDown, SquarePen, QrCode, User, Wallet, FileText, Plus, Home, CreditCard, MoreHorizontal, Signal, Wifi, BatteryFull } from "lucide-react";
+import { Bell, Eye, EyeOff, ChevronDown, SquarePen, QrCode, User, Wallet, FileText, Plus, Home, CreditCard, MoreHorizontal} from "lucide-react";
 
 const GREEN = "#0a6b3d";
 
@@ -17,7 +17,7 @@ interface Transaction {
 
 const transactions: Transaction[] = [
   { id: 1, name: "GADGETS 360.HP", date: "04 Aug, 2026 10:51 AM", desc: "Paid for Mobile Convergent", amount: "5650.0", kind: "fonepay" },
-  { id: 2, name: "Fonepay Interbank", date: "04 Aug, 2026 10:14 AM", desc: "Paid for Fonepay Interbank", amount: "38000.0", kind: "interbank" },
+  { id: 2, name: "Fonepay Interbank", date: "04 Aug, 2026 10:14 AM", desc: "Paid for Fonepay Interbank", amount: "380.0", kind: "interbank" },
   { id: 3, name: "S. S. COFFEE BREWERY", date: "30 Jul, 2026 03:30 PM", desc: "Paid for Mobile Convergent", amount: "590.0", kind: "fonepay" },
   { id: 4, name: "Mo Mo Centre", date: "29 Jul, 2026 12:22 PM", desc: "Paid for Mobile Convergent", amount: "345.0", kind: "fonepay" },
   { id: 5, name: "Mo Mo Centre", date: "28 Jul, 2026 01:04 PM", desc: "Paid for Mobile Convergent", amount: "345.0", kind: "fonepay" },
@@ -88,11 +88,9 @@ const BankHome: React.FC = () => {
     <div style={{ maxWidth: 402, margin: "0 auto", background: BG, minHeight: "100vh", fontFamily: "-apple-system, 'SF Pro Text', Roboto, sans-serif" }}>
       {/* Status bar */}
       <div style={{ background: GREEN, color: "#fff", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 20px 6px", fontSize: 15, fontWeight: 600 }}>
-        <span>1:36</span>
+        <span style={{color: GREEN}}>.</span>
         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-          <Signal size={15} />
-          <Wifi size={15} />
-          <BatteryFull size={18} />
+          
         </div>
       </div>
 
