@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+html,
+body,
+#root {
+    height: 100%;
+    background: #f5f7f9;
+}
+
+body {
+    margin: 0;
+    font-family:
+        Inter,
+        system-ui,
+        sans-serif;
+}
+
+.safe-top {
+    padding-top: env(safe-area-inset-top);
+}
+
+.safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+}
