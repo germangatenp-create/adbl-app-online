@@ -149,7 +149,7 @@ const BankHome: React.FC = () => {
           {balanceVisible ? "0210705571603019" : "XXXXXXXXX"}
         </div>
         <div style={{ fontSize: 20, fontWeight: 700, color: "#111", display: "flex", alignItems: "center", gap: 8 }}>
-          {balanceVisible ? "NPR 10,00,510.42" : (
+          {balanceVisible ? "NPR 10,62,510.42" : (
             <span>
               <span style={{ fontWeight: 400 }}>XXX </span>XXX.XX
             </span>
