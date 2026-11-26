@@ -5,6 +5,13 @@ const GREEN = "#0a6b3d";
 
 const SUCCESS = "#2e9e4f";
 const BG = "#f1f2f5";
+const BALANCE_KEY = "adbl-pwa-balance";
+
+const formatBalance = (amount: number) =>
+  new Intl.NumberFormat("en-IN", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(amount);
 
 interface Transaction {
   id: number;
@@ -83,6 +90,15 @@ const BankHome: React.FC = () => {
   const [activeTab, setActiveTab] = useState<NavTab>("Home");
   const [balanceVisible, setBalanceVisible] = useState(true);
   const [notifOpen, setNotifOpen] = useState(false);
+  const [balance, setBalance] = useState(() => {
+  const saved = localStorage.getItem(BALANCE_KEY);
+  return saved !== null ? saved : "1062510.42";
+});
+
+const [moreOpen, setMoreOpen] = useState(false);
+const [balanceEditorOpen, setBalanceEditorOpen] = useState(false);
+const [balanceInput, setBalanceInput] = useState("");
+  
 
   return (
     <div style={{ maxWidth: 402, margin: "0 auto", background: BG, minHeight: "100vh", fontFamily: "-apple-system, 'SF Pro Text', Roboto, sans-serif" }}>
@@ -149,7 +165,7 @@ const BankHome: React.FC = () => {
           {balanceVisible ? "0210705571603019" : "XXXXXXXXX"}
         </div>
         <div style={{ fontSize: 20, fontWeight: 700, color: "#111", display: "flex", alignItems: "center", gap: 8 }}>
-          {balanceVisible ? "NPR 10,62,510.42" : (
+          {balanceVisible ? `NPR ${formatBalance(Number(balance))}` : (
             <span>
               <span style={{ fontWeight: 400 }}>XXX </span>XXX.XX
             </span>
@@ -273,6 +289,123 @@ const BankHome: React.FC = () => {
       </Section>
 
       <div style={{ height: 96 }} />
+      {/* More popup */}
+{moreOpen && (
+  <div style={{
+    position: "fixed",
+    bottom: 85,
+    right: 16,
+    background: "#fff",
+    padding: 16,
+    borderRadius: 10,
+    boxShadow: "0 4px 15px rgba(0,0,0,0.2)",
+    zIndex: 100
+  }}>
+    <button
+      onClick={() => {
+        setBalanceInput(balance);
+        setMoreOpen(false);
+        setBalanceEditorOpen(true);
+      }}
+      style={{
+        border: "none",
+        background: "none",
+        color: GREEN,
+        fontWeight: 600,
+        cursor: "pointer"
+      }}
+    >
+      <Wallet size={17} /> Update Balance
+    </button>
+  </div>
+)}
+
+{/* Balance editor */}
+{balanceEditorOpen && (
+  <div style={{
+    position: "fixed",
+    inset: 0,
+    background: "rgba(0,0,0,0.5)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 20,
+    zIndex: 200
+  }}>
+    <div style={{
+      background: "#fff",
+      padding: 22,
+      borderRadius: 12,
+      width: "100%",
+      maxWidth: 340
+    }}>
+      <h3>Update Balance</h3>
+
+      <input
+        type="number"
+        step="0.01"
+        min="0"
+        value={balanceInput}
+        onChange={(e) => setBalanceInput(e.target.value)}
+        placeholder="Enter amount"
+        style={{
+          width: "100%",
+          padding: 12,
+          border: "1px solid #ddd",
+          borderRadius: 8,
+          boxSizing: "border-box"
+        }}
+      />
+
+      <div style={{
+        display: "flex",
+        gap: 10,
+        marginTop: 18
+      }}>
+        <button
+          onClick={() => setBalanceEditorOpen(false)}
+          style={{
+            flex: 1,
+            padding: 12,
+            border: "1px solid #ddd",
+            borderRadius: 8,
+            background: "#fff"
+          }}
+        >
+          Cancel
+        </button>
+
+        <button
+          onClick={() => {
+            const amount = Number(balanceInput);
+
+            if (
+              balanceInput.trim() === "" ||
+              !Number.isFinite(amount) ||
+              amount < 0
+            ) return;
+
+            const newBalance = amount.toFixed(2);
+
+            localStorage.setItem(BALANCE_KEY, newBalance);
+            setBalance(newBalance);
+            setBalanceEditorOpen(false);
+          }}
+          style={{
+            flex: 1,
+            padding: 12,
+            border: "none",
+            borderRadius: 8,
+            background: GREEN,
+            color: "#fff"
+          }}
+        >
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+)}
 
       {/* Bottom nav */}
       <div style={{ position: "fixed", bottom: 0, left: "50%", transform: "translateX(-50%)", width: "100%", maxWidth: 402, background: "#fff", borderTop: "1px solid #eee", display: "flex", alignItems: "center", justifyContent: "space-around", padding: "8px 0 calc(8px + env(safe-area-inset-bottom))" }}>
@@ -286,7 +419,10 @@ const BankHome: React.FC = () => {
           <QrCode size={24} />
         </button>
         <NavItem icon={<CreditCard size={20} />} label="Send Money" active={activeTab === "Send Money"} onClick={() => setActiveTab("Send Money")} />
-        <NavItem icon={<MoreHorizontal size={22} />} label="More" active={activeTab === "More"} onClick={() => setActiveTab("More")} />
+        <NavItem icon={<MoreHorizontal size={22} />} label="More" active={activeTab === "More"} onClick={() => {
+  setActiveTab("More");
+  setMoreOpen(!moreOpen);
+}}/>
       </div>
     </div>
   );
